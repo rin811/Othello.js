@@ -13,6 +13,8 @@ var cornerRound=10;
 var scoreSize=200;
 
 //ゲーム内変数
+var game;
+
 var whiteNum=63;
 var blackNum=10;
 
@@ -21,6 +23,7 @@ var secondaryColor="#1F1B24";
 var boardColor="#6BA32D";
 var lineColor="#646464";
 var textColor="#e2e2e2";
+var whiteDiskColor="#f6f5ff";
 
 window.addEventListener("touchend", function(event){
     x=event.changedTouches[0].pageX;
@@ -34,6 +37,8 @@ function preload(){
 
 function setup(){
     createCanvas(windowWidth,windowHeight);
+
+    game=new Othello();
     textFont(font);
     drawGame();
 }
@@ -54,6 +59,24 @@ function drawGame(){
         var foo=offset+boardStroke+(windowWidth-offset*2-boardStroke*2)/8*i;
         line(offset+boardStroke,foo,windowWidth-offset-boardStroke,foo);
         line(foo,offset+boardStroke,foo,windowWidth-offset-boardStroke);
+    }
+
+    //石の描画
+    for(var y=0;y<8;y++){
+        for(var x=0;x<8;x++){
+            switch(game.board[x][y]){
+                case discStat.white:
+                    fill(whiteDiskColor);
+                    break;
+                case discStat.black:
+                    fill(primaryColor);
+                    break;
+                default:
+                    break;
+            }
+            if(game.board[x][y]!=discStat.empty)
+                circle(offset+boardStroke+(windowWidth-offset*2-boardStroke*2)/16+(windowWidth-offset*2-boardStroke*2)/8*x, offset+boardStroke+(windowWidth-offset*2-boardStroke*2)/16+(windowWidth-offset*2-boardStroke*2)/8*y, 100);
+        }
     }
 
     //スコア表
@@ -119,3 +142,24 @@ function windowResized(){
 // function draw(){
 //     //background(0);
 // }
+
+class Othello{
+    constructor(){
+        this.init();
+    }
+
+    init(){
+        this.board=new Array(8);
+        for(var x=0;x<8;x++){
+            this.board[x]=new Array(8);
+            for(var y=0;y<8;y++){
+                this.board[x][y]=discStat.empty;
+            }
+        }
+        //初期配置をセット
+        this.board[3][3]=discStat.white;
+        this.board[4][4]=discStat.white;
+        this.board[4][3]=discStat.black;
+        this.board[3][4]=discStat.black; 
+    }
+}
