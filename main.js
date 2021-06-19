@@ -1,5 +1,5 @@
 //列挙定数
-var discStat={
+const discStat={
     empty : 0,
     black : 1,
     white : 2
@@ -132,7 +132,14 @@ function gameInit(){
 }
 
 function touched(x, y) {
-    //置く処理
+    //タッチ判定
+    //ボード中の場合
+    if(offset+boardStroke<x && y<windowWidth-(offset+boardStroke) && offset+boardStroke<y && y<windowWidth-(offset+boardStroke)){
+        normalizedX=x-(offset+boardStroke);
+        normalizedY=y-(offset+boardStroke);
+        boardX=Math.floor(normalizedX/((windowWidth-offset*2-boardStroke*2)/8));//押された位置
+        boardY=Math.floor(normalizedY/((windowWidth-offset*2-boardStroke*2)/8));
+    }
 
 
     drawGame();
