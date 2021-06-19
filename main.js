@@ -15,8 +15,8 @@ var scoreSize=200;
 //ゲーム内変数
 var game;
 
-var whiteNum=63;
-var blackNum=10;
+var whiteNum=0;
+var blackNum=0;
 
 var primaryColor="#121212";
 var secondaryColor="#1F1B24";
@@ -39,6 +39,8 @@ function setup(){
     createCanvas(windowWidth,windowHeight);
 
     game=new Othello();
+    whiteNum=game.getDiskCount(discStat.white);
+    blackNum=game.getDiskCount(discStat.black);
     textFont(font);
     drawGame();
 }
@@ -69,7 +71,7 @@ function drawGame(){
                     fill(whiteDiskColor);
                     break;
                 case discStat.black:
-                    fill(primaryColor);
+                    fill(secondaryColor);
                     break;
                 default:
                     break;
@@ -130,7 +132,9 @@ function gameInit(){
 }
 
 function touched(x, y) {
-    
+    //置く処理
+
+
     drawGame();
 }
 
@@ -160,6 +164,17 @@ class Othello{
         this.board[3][3]=discStat.white;
         this.board[4][4]=discStat.white;
         this.board[4][3]=discStat.black;
-        this.board[3][4]=discStat.black; 
+        this.board[3][4]=discStat.black;
+    }
+
+    getDiskCount(DiscStat){
+        var count=0;
+        for(var x=0;x<8;x++){
+            for(var y=0;y<8;y++){
+                if (this.board[x][y]==DiscStat)
+                    count++;
+            }
+        }
+        return count;
     }
 }
