@@ -71,7 +71,7 @@ function drawGame(){
     for(let x=0;x<8;x++){
         for(let y=0;y<8;y++){
             if(game.getCanFlipAllDirection(x,y)){
-                fill(255,255,255);
+                fill(255,255,255,150);
                 rect(offset+boardStroke+(windowWidth-(offset+boardStroke)*2)/8*x,
                 offset+boardStroke+(windowWidth-(offset+boardStroke)*2)/8*y,
                 (windowWidth-(offset+boardStroke)*2)/8,(windowWidth-(offset+boardStroke)*2)/8);
@@ -98,6 +98,9 @@ function drawGame(){
     }
 
     //スコア表
+    blackNum=game.getDiskCount(discStat.black);
+    whiteNum=game.getDiskCount(discStat.white);
+
     fill(secondaryColor);
     rect(offset,windowWidth,windowWidth-offset*2,scoreSize,10);
     stroke(lineColor);
@@ -218,10 +221,6 @@ class Othello{
             this.turn=this.getTurnInvert();
         }
             
-    }
-
-    scanBoard(){//石がおける場所を配列で返す
-        
     }
 
     getTurnInvert(){
