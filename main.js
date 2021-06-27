@@ -1,3 +1,6 @@
+//p5
+//p5.disableFriendlyErrors = true;
+
 //列挙定数
 const discStat={
     empty : 0,
@@ -42,6 +45,7 @@ function setup(){
     whiteNum=game.getDiskCount(discStat.white);
     blackNum=game.getDiskCount(discStat.black);
     textFont(font);
+    pixelDensity(2);
     drawGame();
 }
 
@@ -123,7 +127,6 @@ function drawGame(){
     fill(lineColor)
     textSize(70)
     text("/64",windowWidth/2+offset*2+(scoreSize-50/2)+75*2,windowWidth+scoreSize/2+(scoreSize-20)/2-15);
-
 }
 
 function gameInit(){
@@ -139,8 +142,8 @@ function touched(x, y) {
         normalizedY=y-(offset+boardStroke);
         boardX=Math.floor(normalizedX/((windowWidth-offset*2-boardStroke*2)/8));//押された位置
         boardY=Math.floor(normalizedY/((windowWidth-offset*2-boardStroke*2)/8));
+        game.putDisk(boardX, boardY);
     }
-
 
     drawGame();
 }
@@ -156,7 +159,17 @@ function windowResized(){
 
 class Othello{
     constructor(){
+        this.directionX={
+            LEFT : -1,
+            RIGHT : 1
+        }
+        this.directionY={
+            UP : -1,
+            DOWN : 1
+        }
+        
         this.init();
+        this.turn=discStat.black;
     }
 
     init(){
@@ -183,5 +196,37 @@ class Othello{
             }
         }
         return count;
+    }
+
+    putDisk(x, y){
+        //置けるか確認
+        //置く
+        this.board[x][y]=discStat.black;
+    }
+
+    scanBoard(){//石がおける場所を配列で返す
+        
+    }
+
+    getTurnInvert(){
+        if(this.turn==discStat.black)
+            return discStat.white;
+        else
+            return discStat.black;
+    }
+
+    getCanFlip(x,y,vecX=0,vecY=0){
+        //配列の範囲内かチェック 返せないならreturn null 返せたらそこまでの距離を数値にして返す
+        if(0<=x+vecX && x+vecX<=7 && 0<=y+vecY && y+vecY<=7){
+            if(this.board[x+vecX][y+vecY]==this.getTurnInvert()){
+                for(let i=2;0<=x+vecX*i && x+vecX*i<=7 && 0<=y+vecY*i && y+vecY*i<=7;i++){
+                    if(this.board[x+vecX*i][y+vecY*i]==discStat.empty)
+                        return null;
+                    if(this.board[x+vecX*i][y+vecY*i]==this.turn)
+                        return i;
+                }
+            }
+        }
+        return null;
     }
 }
