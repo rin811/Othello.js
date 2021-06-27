@@ -67,6 +67,18 @@ function drawGame(){
         line(foo,offset+boardStroke,foo,windowWidth-offset-boardStroke);
     }
 
+    //おけるところを表示
+    for(let x=0;x<8;x++){
+        for(let y=0;y<8;y++){
+            if(game.getCanFlipAllDirection(x,y)){
+                fill(255,255,255);
+                rect(offset+boardStroke+(windowWidth-(offset+boardStroke)*2)/8*x,
+                offset+boardStroke+(windowWidth-(offset+boardStroke)*2)/8*y,
+                (windowWidth-(offset+boardStroke)*2)/8,(windowWidth-(offset+boardStroke)*2)/8);
+            }
+        }
+    }
+
     //石の描画
     for(var y=0;y<8;y++){
         for(var x=0;x<8;x++){
@@ -201,7 +213,11 @@ class Othello{
     putDisk(x, y){
         //置けるか確認
         //置く
-        this.board[x][y]=discStat.black;
+        if(this.getCanFlipAllDirection(x,y)){
+            this.board[x][y]=this.turn;
+            this.turn=this.getTurnInvert();
+        }
+            
     }
 
     scanBoard(){//石がおける場所を配列で返す
@@ -228,5 +244,15 @@ class Othello{
             }
         }
         return null;
+    }
+
+    getCanFlipAllDirection(x,y){
+        let vecX360=[-1,1,0,0,-1,-1,1,1];
+        let vecY360=[0,0,-1,1,-1,1,-1,1];
+        for(let i=0;i<8;i++){
+            if(this.getCanFlip(x,y,vecX360[i],vecY360[i])!=null && this.board[x][y]==discStat.empty)
+                return true;
+        }
+        return false;
     }
 }
