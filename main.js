@@ -218,6 +218,13 @@ class Othello{
         //置く
         if(this.getCanFlipAllDirection(x,y)){
             this.board[x][y]=this.turn;
+        //連鎖
+        let vecX360=[-1,1,0,0,-1,-1,1,1];
+        let vecY360=[0,0,-1,1,-1,1,-1,1];
+        for(let i=0;i<8;i++){
+            this.lineFlip(x,y,vecX360[i],vecY360[i],this.getCanFlip(x,y,vecX360[i],vecY360[i]));
+        }
+
             this.turn=this.getTurnInvert();
         }
             
