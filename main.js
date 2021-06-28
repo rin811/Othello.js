@@ -254,4 +254,10 @@ class Othello{
         }
         return false;
     }
+
+    lineFlip(x,y,vecX=0,vecY=0,length){
+        for(let i=0;i<length;i++){
+            this.board[x+vecX*i][y+vecY*i]=this.turn;
+        }
+    }
 }
