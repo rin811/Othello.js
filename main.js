@@ -238,6 +238,26 @@ class Othello{
             this.lineFlip(x,y,vecX360[i],vecY360[i],this.getCanFlip(x,y,vecX360[i],vecY360[i]));
         }
 
+        //勝敗判定(空きマスが0の場合)
+        let blackCount=this.getDiskCount(discStat.black);
+        let whiteCount=this.getDiskCount(discStat.white);
+        let emptyCount=this.getDiskCount(discStat.empty);
+
+            if(this.emptyCount==0){
+                if(whiteCount==blackCount){
+                    //draw
+                    alert("draw");
+                }else{
+                    if(whiteCount<blackCount){
+                        //blackWin
+                        alert("blackWin");
+                    }else{
+                        //whiteWin
+                        alert("whiteWin");
+                    }
+                }
+            }
+
             this.turn=this.getTurnInvert();
         }
             
