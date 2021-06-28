@@ -243,7 +243,7 @@ class Othello{
         let whiteCount=this.getDiskCount(discStat.white);
         let emptyCount=this.getDiskCount(discStat.empty);
 
-            if(this.emptyCount==0){
+            if(emptyCount==0){
                 if(whiteCount==blackCount){
                     //draw
                     alert("draw");
