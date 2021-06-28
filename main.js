@@ -105,6 +105,13 @@ function drawGame(){
     rect(offset,windowWidth,windowWidth-offset*2,scoreSize,10);
     stroke(lineColor);
     line(windowWidth/2,windowWidth + 10,windowWidth/2,windowWidth+scoreSize - 10);
+
+    //ターンどっちか
+    if(game.turn==discStat.white){
+        strokeWeight(0);
+        fill(100,100,100,80);
+        rect(offset,windowWidth,(windowWidth-offset*2)/2,scoreSize,10);
+    }
     
     strokeWeight(0);
     fill(255,255,255);
@@ -128,6 +135,12 @@ function drawGame(){
     fill(primaryColor);
     strokeWeight(5);
     circle(windowWidth/2+offset*2+(scoreSize-50)/2,windowWidth+scoreSize/2,scoreSize-50);
+
+    if(game.turn==discStat.black){
+        strokeWeight(0);
+        fill(100,100,100,80);
+        rect(offset+(windowWidth-offset*2)/2,windowWidth,(windowWidth-offset*2)/2,scoreSize,10);
+    }
 
     strokeWeight(0);
     fill(textColor);
