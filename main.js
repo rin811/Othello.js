@@ -15,6 +15,9 @@ var cornerRound=10;
 //スコアボード
 var scoreSize=200;
 
+//スコア用アニメーション変数（仮）
+var scoreAnimFrame=0;//max(100)
+
 //ゲーム内変数
 var game;
 
@@ -106,13 +109,23 @@ function drawGame(){
     stroke(lineColor);
     line(windowWidth/2,windowWidth + 10,windowWidth/2,windowWidth+scoreSize - 10);
 
-    //ターンどっちか
+    //ターン判別用の短形
+    let beforePosition;
+    let afterPosition;
+
     if(game.turn==discStat.white){
-        strokeWeight(0);
-        fill(100,100,100,80);
-        rect(offset,windowWidth,(windowWidth-offset*2)/2,scoreSize,10);
+        beforePosition=offset;
+        afterPosition=offset+(windowWidth-offset*2)/2;
+    }else{
+        beforePosition=offset+(windowWidth-offset*2)/2;
+        afterPosition=offset;
     }
-    
+    push();
+    strokeWeight(0);
+    fill(100,100,100,80);
+    rect(afterPosition-(afterPosition-beforePosition)*Animate.EaseOutExpo(scoreAnimFrame),windowWidth,(windowWidth-offset*2)/2,scoreSize,10);
+    pop();
+
     strokeWeight(0);
     fill(255,255,255);
     circle(offset*2+(scoreSize-50)/2,windowWidth+scoreSize/2,scoreSize-50);
@@ -135,12 +148,6 @@ function drawGame(){
     fill(primaryColor);
     strokeWeight(5);
     circle(windowWidth/2+offset*2+(scoreSize-50)/2,windowWidth+scoreSize/2,scoreSize-50);
-
-    if(game.turn==discStat.black){
-        strokeWeight(0);
-        fill(100,100,100,80);
-        rect(offset+(windowWidth-offset*2)/2,windowWidth,(windowWidth-offset*2)/2,scoreSize,10);
-    }
 
     strokeWeight(0);
     fill(textColor);
@@ -181,9 +188,25 @@ function windowResized(){
     drawGame();
 }
 
-// function draw(){
-//     //background(0);
-// }
+function draw(){
+    //アニメーション更新
+    if(scoreAnimFrame<100){
+        scoreAnimFrame+=3;
+        // console.log(Animate.EaseOutExpo(scoreAnimFrame));
+    }
+        
+    drawGame();
+}
+
+class Animate{
+    static EaseOutExpo(t)
+    {
+        var b=0;
+        var c=1;
+        var d=100;
+        return (t==d)?b+c:c*(-Math.pow(2,-10*t/d)+1)+b;
+    }
+}
 
 class Othello{
     constructor(){
@@ -259,6 +282,7 @@ class Othello{
             }
 
             this.turn=this.getTurnInvert();
+            scoreAnimFrame=0;
         }
             
     }
