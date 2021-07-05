@@ -122,7 +122,7 @@ function drawGame(){
     }
     push();
     strokeWeight(0);
-    fill(100,100,100,80);
+    fill(100,100,100,130);
     rect(afterPosition-(afterPosition-beforePosition)*Animate.EaseOutExpo(scoreAnimFrame),windowWidth,(windowWidth-offset*2)/2,scoreSize,10);
     pop();
 
@@ -140,8 +140,8 @@ function drawGame(){
     textAlign(LEFT,BOTTOM);
     text(whiteNum,offset*2+(scoreSize-50/2),windowWidth+scoreSize/2+(scoreSize-20)/2);
 
-    fill(lineColor)
-    textSize(70)
+    fill(lineColor);
+    textSize(70);
     text("/64",offset*2+(scoreSize-50/2)+75*2,windowWidth+scoreSize/2+(scoreSize-20)/2-15);
 
     //ターンじゃないほう
@@ -159,8 +159,8 @@ function drawGame(){
     textAlign(LEFT,BOTTOM);
     text(blackNum,windowWidth/2+offset*2+(scoreSize-50/2),windowWidth+scoreSize/2+(scoreSize-20)/2);
 
-    fill(lineColor)
-    textSize(70)
+    fill(lineColor);
+    textSize(70);
     text("/64",windowWidth/2+offset*2+(scoreSize-50/2)+75*2,windowWidth+scoreSize/2+(scoreSize-20)/2-15);
 }
 
@@ -192,10 +192,11 @@ function draw(){
     //アニメーション更新
     if(scoreAnimFrame<100){
         scoreAnimFrame+=3;
+        drawGame();
         // console.log(Animate.EaseOutExpo(scoreAnimFrame));
     }
         
-    drawGame();
+    
 }
 
 class Animate{
