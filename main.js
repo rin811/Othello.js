@@ -7,13 +7,24 @@ const discStat={
     black : 1,
     white : 2
 }
+const buttonName=["settings", "undo", "restart"];
+
+const buttonType={
+    settings : 0,
+    undo : 1,
+    restart: 2
+}
 
 var offset=10;
 var boardStroke=5;
 var cornerRound=10;
 
+//ボタン
+var buttons;
+
 //スコアボード
 var scoreSize=200;
+var buttonSize=150;
 
 //スコア用アニメーション変数（仮）
 var scoreAnimFrame=0;//max(100)
@@ -39,10 +50,16 @@ window.addEventListener("touchend", function(event){
 
 function preload(){
     font=loadFont('font/Roboto-Medium.ttf');
+    fontJP=loadFont('font/SawarabiGothic-Regular.ttf');
 }
 
 function setup(){
     createCanvas(windowWidth,windowHeight);
+
+    buttons=new Array(3);
+    for(let i=0;i<3;i++){
+        buttons[i]=new UIbutton();
+    }
 
     game=new Othello();
     whiteNum=game.getDiskCount(discStat.white);
@@ -162,6 +179,21 @@ function drawGame(){
     fill(lineColor);
     textSize(70);
     text("/64",windowWidth/2+offset*2+(scoreSize-50/2)+75*2,windowWidth+scoreSize/2+(scoreSize-20)/2-15);
+
+    //ボタンUI
+    fill(secondaryColor);
+    // menuHeight=windowWidth+offset*2+scoreSize;
+    menuHeight=windowHeight-buttonSize-offset;
+    rect(windowWidth-(buttonSize+offset),menuHeight, buttonSize,buttonSize, 10);
+    buttonWidth=(windowWidth-buttonSize-offset*4)/2;
+    for(let i=0;i<2;i++){
+        rect(offset*(i+1)+buttonWidth*i,menuHeight,buttonWidth,buttonSize,10);
+    }
+    //ボタンクラスに代入
+    buttons[0].setButton(windowWidth-(buttonSize+offset),menuHeight, buttonSize,buttonSize);
+    for(let i=0;i<2;i++){
+        buttons[i+1].setButton(offset*(i+1)+buttonWidth*i,menuHeight,buttonWidth,buttonSize);
+    }
 }
 
 function gameInit(){
@@ -171,6 +203,12 @@ function gameInit(){
 
 function touched(x, y) {
     //タッチ判定
+    //ボタン判定
+    for(let i=0;i<3;i++){
+        pushed=buttons[i].checkPushed(x,y);
+        if(pushed)console.log(buttonName[i]+" was pushed!");
+    }
+
     //ボード中の場合
     if(offset+boardStroke<x && y<windowWidth-(offset+boardStroke) && offset+boardStroke<y && y<windowWidth-(offset+boardStroke)){
         normalizedX=x-(offset+boardStroke);
@@ -197,6 +235,29 @@ function draw(){
     }
         
     
+}
+
+class UIbutton{
+    constructor(){
+        this.name;
+        this.x;
+        this.y;
+        this.sizeX;
+        this.sizeY;
+        this.func;
+    }
+    setButton(x,y,sx,sy){
+        this.x=x;
+        this.y=y;
+        this.sizeX=sx;
+        this.sizeY=sy;
+    }
+    checkPushed(x,y){
+        if(this.x<x && x<this.x+this.sizeX && this.y<y && y<this.y+this.sizeY)
+            return true;
+        else
+            return false;
+    }
 }
 
 class Animate{
